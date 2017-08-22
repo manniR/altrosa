@@ -1,0 +1,64 @@
+
+{% extends '_layout/main-layout.html' %}
+
+{% block content %}
+	{% if message is defined %}
+		{% for error in message.getAllErrors() %}
+			{{ error }}
+		{% endfor %}
+	{% endif %}
+
+	{% macro errorList(errors) %}
+		{% for error in errors %}
+			<small>{{ error }} </small>
+		{% endfor %}
+	{% endmacro %}
+
+	<form method="POST" action="">
+		{{ getCsrfInput() }}
+		<input type="hidden" name="action" value="contactForm/sendMessage">
+		<input type="hidden" name="redirect" value="/contact/thanks">
+		<h1>{{ entry.title }}</h1>
+		<div class="field">
+			<label class="label">Name</label>
+			<div class="control">
+				<input class="input" 
+				name="fromName" 
+				type="text" 
+				placeholder="Text input">
+			</div>
+		</div>
+		<div class="field">
+			<label class="label">Email</label>
+			<p class="control has-icons-left has-icons-right">
+				<input class="input" 
+				name="fromEmail" 
+				type="email" 
+				placeholder="Email">
+				{{ message is defined and message ? _self.errorList(message.getErrors('fromEmail')) }}
+				<span class="icon is-small is-left">
+					<i class="fa fa-envelope"></i>
+				</span>
+				<span class="icon is-small is-right">
+					<i class="fa fa-check"></i>
+				</span>
+			</p>
+		</div>
+		<div class="field">
+			<label class="label">Message</label>
+			<div class="control">
+				<textarea class="textarea" 
+				name="message"
+				placeholder="Your Message"></textarea>
+			</div>
+		</div>
+		<div class="field">
+			<p class="control">
+				<button class="button is-success">
+					Submit
+				</button>
+			</p>
+		</div>
+		<input type="text" name="pooh" id="pooh">
+	</form>
+{% endblock %}
